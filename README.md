@@ -1,17 +1,11 @@
 # uint8
-Inspired from BrainFuck
+Inspired from Brainfuck
 ## Overview
-BrainFuck is a programming language with the most simple syntax.  
+Brainfuck is a programming language with the most simple syntax.  
 Now, uint8 is the programming language with the most simple storage structure.
 ## Syntax
-There is an uint8_t memory `v` initialized as
-```c
-00000000
-```
-and an uint8_t mask `m` initialized as
-```c
-00000001
-```
+There is an uint8_t memory `v` initialized as `00000000`
+and an uint8_t mask `m` initialized as `00000001`
 ### `<`
 ```c
 m = m << 1 | m >> 7 // Circular shift
@@ -24,18 +18,22 @@ m = m >> 1 | m << 7 // Circular shift
 ```c
 v = v ^ m // Invert
 ```
-### `0`
+### `&`
 ```c
-v = v & ~m // 0-ify
+v = v & ~m // Set to 0
 ```
-### `1`
+### `|`
 ```c
-v = v | m // 1-ify
+v = v | m // Set to 1
 ```
 ### `.`
 Prints certain bit.
-### `,`
+### `*`
 Prints every bits.
+### `,`
+Prints decimal digits.
+### `@`
+Prints ascii character.
 ### `/`
 Prints line feed (`\n`).
 ### `[`

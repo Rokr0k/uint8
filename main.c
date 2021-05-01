@@ -48,17 +48,24 @@ const char VERSION[] = "uint8 v1.0\n";
             exit(0);
         }
     }
-    #define RED   SetConsoleTextAttribute(h, BACKGROUND_RED);
-    #define GRN   SetConsoleTextAttribute(h, BACKGROUND_GREEN | BACKGROUND_INTENSITY);
-    #define RESET SetConsoleTextAttribute(h, r);
+    #define RED   SetConsoleTextAttribute(h, BACKGROUND_RED | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+    #define GRN   SetConsoleTextAttribute(h, BACKGROUND_GREEN | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+    #define BLU   SetConsoleTextAttribute(h, BACKGROUND_BLUE | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+    #define RST   SetConsoleTextAttribute(h, r);
     void print_on() {
         if(colored) GRN fprintf(stdout, "1");
     }
     void print_off() {
         if(colored) RED fprintf(stdout, "0");
     }
+    void print_number(unsigned char number) {
+        if(colored) BLU fprintf(stdout, "%03u", number);
+    }
+    void print_ascii(unsigned char number) {
+        if(colored) BLU fprintf(stdout, "%c", number);
+    }
     void print_next() {
-        if(colored) RESET fprintf(stdout, "\n");
+        if(colored) RST fprintf(stdout, "\n");
     }
 #else
     #include <unistd.h>
@@ -106,8 +113,9 @@ const char VERSION[] = "uint8 v1.0\n";
         }
     }
     #define RED   "\033[41m"
-    #define GRN   "\033[102m"
-    #define RESET "\033[0m"
+    #define GRN   "\033[42m"
+    #define BLU   "\033[44m"
+    #define RST   "\033[0m"
     void print_on() {
         if(colored)
             fprintf(stdout, GRN "1");
@@ -120,9 +128,21 @@ const char VERSION[] = "uint8 v1.0\n";
         else
             fprintf(stdout, "0");
     }
+    void print_number(unsigned char number) {
+        if(colored)
+            fprintf(stdout, BLU "%03u", number);
+        else
+            fprintf(stdout, "%03u", number);
+    }
+    void print_ascii(unsigned char number) {
+        if(colored)
+            fprintf(stdout, BLU "%c", number);
+        else
+            fprintf(stdout, "%c", number);
+    }
     void print_next() {
         if(colored)
-            fprintf(stdout, RESET "\n");
+            fprintf(stdout, RST "\n");
         else
             fprintf(stdout, "\n");
     }
@@ -151,28 +171,34 @@ int main(int argc, char **argv) {
         case '~':
             v = v ^ m;
             break;
-        case '0':
+        case '&':
             v = v & ~m;
             break;
-        case '1':
+        case '|':
             v = v | m;
             break;
         case '.':
             if(v >> __builtin_ctz(m) & 1)
-                print_on(stdout);
+                print_on();
             else
-                print_off(stdout);
+                print_off();
             break;
-        case ',':
+        case '*':
             for(int j=7; j>=0; --j) {
                 if(v >> j & 1)
-                    print_on(stdout);
+                    print_on();
                 else
-                    print_off(stdout);
+                    print_off();
             }
             break;
+        case ',':
+            print_number(v);
+            break;
+        case '@':
+            print_ascii(v);
+            break;
         case '/':
-            print_next(stdout);
+            print_next();
             break;
         case '[':
             if(!(v & m)) {
@@ -202,7 +228,7 @@ int main(int argc, char **argv) {
             break;
         }
     }
-    print_next(stdout);
+    print_next();
 
     free(s);
     return 0;
