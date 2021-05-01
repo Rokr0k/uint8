@@ -3,7 +3,14 @@
 
 const char FILE_NOT_SPECIFIED[] = "File not specified.\n";
 const char FILE_NOT_AVAILABLE[] = "File not available.\n";
-const char HELP[] = "Options :\n        -v             - Show version.\n        -h             - Show such a helpful text :)\n        -c             - Make the output colorful.\n        -o [FILENAME]  - Print the output into his file.\n\nUSAGE : %s [FILENAME] <OPTIONS>\n";
+const char HELP[] = 
+"Options :\n"
+"        -v             - Show version.\n"
+"        -h             - Show such a helpful text :)\n"
+"        -c             - Make the output colorful.\n"
+"        -o [FILENAME]  - Print the output into his file.\n"
+"\n"
+"USAGE : %s [FILENAME] <OPTIONS>\n";
 const char VERSION[] = "uint8 v1.0\n";
 
 #ifdef _WIN32
@@ -48,9 +55,21 @@ const char VERSION[] = "uint8 v1.0\n";
             exit(0);
         }
     }
-    #define RED   SetConsoleTextAttribute(h, BACKGROUND_RED | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-    #define GRN   SetConsoleTextAttribute(h, BACKGROUND_GREEN | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-    #define BLU   SetConsoleTextAttribute(h, BACKGROUND_BLUE | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+    #define RED   SetConsoleTextAttribute(h, BACKGROUND_RED \
+	                                       | FOREGROUND_RED \
+										   | FOREGROUND_GREEN \
+										   | FOREGROUND_BLUE \
+										   | FOREGROUND_INTENSITY);
+    #define GRN   SetConsoleTextAttribute(h, BACKGROUND_GREEN \
+	                                       | FOREGROUND_RED \
+										   | FOREGROUND_GREEN \
+										   | FOREGROUND_BLUE \
+										   | FOREGROUND_INTENSITY);
+    #define BLU   SetConsoleTextAttribute(h, BACKGROUND_BLUE \
+	                                       | FOREGROUND_RED \
+										   | FOREGROUND_GREEN \
+										   | FOREGROUND_BLUE \
+										   | FOREGROUND_INTENSITY);
     #define RST   SetConsoleTextAttribute(h, r);
     void print_on() {
         if(colored) GRN fprintf(stdout, "1");
