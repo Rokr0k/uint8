@@ -4,13 +4,15 @@
 const char FILE_NOT_SPECIFIED[] = "File not specified.\n";
 const char FILE_NOT_AVAILABLE[] = "File not available.\n";
 const char HELP[] = 
-"Options :\n"
+"uint8 v1.0\n"
+"\n"
+"USAGE : uint8 [FILENAME] <OPTIONS>\n"
+"\n"
+"OPTIONS :\n"
 "        -v             - Show version.\n"
 "        -h             - Show such a helpful text :)\n"
 "        -c             - Make the output colorful.\n"
-"        -o [FILENAME]  - Print the output into his file.\n"
-"\n"
-"USAGE : %s [FILENAME] <OPTIONS>\n";
+"        -o [FILENAME]  - Print the output into his file.\n";
 const char VERSION[] = "uint8 v1.0\n";
 
 #ifdef _WIN32
@@ -55,21 +57,21 @@ const char VERSION[] = "uint8 v1.0\n";
             exit(0);
         }
     }
-    #define RED   SetConsoleTextAttribute(h, BACKGROUND_RED \
-	                                       | FOREGROUND_RED \
-										   | FOREGROUND_GREEN \
-										   | FOREGROUND_BLUE \
-										   | FOREGROUND_INTENSITY);
+    #define RED   SetConsoleTextAttribute(h, BACKGROUND_RED   \
+                                           | FOREGROUND_RED    \
+                                           | FOREGROUND_GREEN   \
+                                           | FOREGROUND_BLUE     \
+                                           | FOREGROUND_INTENSITY);
     #define GRN   SetConsoleTextAttribute(h, BACKGROUND_GREEN \
-	                                       | FOREGROUND_RED \
-										   | FOREGROUND_GREEN \
-										   | FOREGROUND_BLUE \
-										   | FOREGROUND_INTENSITY);
-    #define BLU   SetConsoleTextAttribute(h, BACKGROUND_BLUE \
-	                                       | FOREGROUND_RED \
-										   | FOREGROUND_GREEN \
-										   | FOREGROUND_BLUE \
-										   | FOREGROUND_INTENSITY);
+                                           | FOREGROUND_RED    \
+                                           | FOREGROUND_GREEN   \
+                                           | FOREGROUND_BLUE     \
+                                           | FOREGROUND_INTENSITY);
+    #define BLU   SetConsoleTextAttribute(h, BACKGROUND_BLUE  \
+                                           | FOREGROUND_RED    \
+                                           | FOREGROUND_GREEN   \
+                                           | FOREGROUND_BLUE     \
+                                           | FOREGROUND_INTENSITY);
     #define RST   SetConsoleTextAttribute(h, r);
     void print_on() {
         if(colored) GRN fprintf(stdout, "1");
@@ -99,7 +101,7 @@ const char VERSION[] = "uint8 v1.0\n";
                 exit(0);
                 break;
             case 'h':
-                fprintf(stdout, HELP, argv[0]);
+                fprintf(stdout, HELP);
                 exit(0);
                 break;
             case 'c':
@@ -181,28 +183,28 @@ int main(int argc, char **argv) {
     size_t stk = 0;
     for(size_t i=0; i<l; ++i) {
         switch(s[i]) {
-        case '>':
+        case 'r':
             m = m >> 1 | m << 7;
             break;
-        case '<':
+        case 'l':
             m = m << 1 | m >> 7;
             break;
-        case '~':
+        case 'i':
             v = v ^ m;
             break;
-        case '&':
+        case 'a':
             v = v & ~m;
             break;
-        case '|':
+        case 'o':
             v = v | m;
             break;
-        case '.':
+        case 'b':
             if(v >> __builtin_ctz(m) & 1)
                 print_on();
             else
                 print_off();
             break;
-        case '*':
+        case 's':
             for(int j=7; j>=0; --j) {
                 if(v >> j & 1)
                     print_on();
@@ -210,21 +212,21 @@ int main(int argc, char **argv) {
                     print_off();
             }
             break;
-        case ',':
+        case 'n':
             print_number(v);
             break;
-        case '@':
+        case 'c':
             print_ascii(v);
             break;
-        case '/':
+        case 'e':
             print_next();
             break;
-        case '[':
+        case 'w':
             if(!(v & m)) {
                 for(int j=i; j<l; ++j) {
-                    if(s[j]=='[')
+                    if(s[j]=='w')
                         ++stk;
-                    if(s[j]==']')
+                    if(s[j]=='q')
                         --stk;
                     if(stk == 0) {
                         i = j;
@@ -233,11 +235,11 @@ int main(int argc, char **argv) {
                 }
             }
             break;
-        case ']':
+        case 'q':
             for(int j=i; j>=0; --j) {
-                if(s[j]==']')
+                if(s[j]=='q')
                     ++stk;
-                if(s[j]=='[')
+                if(s[j]=='w')
                     --stk;
                 if(stk == 0) {
                     i = j-1;

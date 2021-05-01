@@ -6,41 +6,41 @@ Now, uint8 is the programming language with the most simple storage structure.
 ## Syntax
 There is an uint8_t memory `v` initialized as `00000000`
 and an uint8_t mask `m` initialized as `00000001`
-### `<`
+### `l`
 ```c
 m = m << 1 | m >> 7 // Circular shift
 ```
-### `>`
+### `r`
 ```c
 m = m >> 1 | m << 7 // Circular shift
 ```
-### `~`
+### `i`
 ```c
 v = v ^ m // Invert
 ```
-### `&`
+### `a`
 ```c
 v = v & ~m // Set to 0
 ```
-### `|`
+### `o`
 ```c
 v = v | m // Set to 1
 ```
-### `.`
+### `b`
 Prints certain bit.
-### `*`
+### `s`
 Prints every bits.
-### `,`
-Prints decimal digits.
-### `@`
+### `n`
+Prints decimal number.
+### `c`
 Prints ascii character.
-### `/`
+### `e`
 Prints line feed (`\n`).
-### `[`
+### `w`
 ```c
 while(v & m) {
 ```
-### `]`
+### `q`
 ```c
 }
 ```
