@@ -26,7 +26,7 @@ const char VERSION[] = "uint8 v1.0\n";
                 fprintf(stdout, VERSION);
                 exit(0);
             } else if(strcmp(argv[i], "-h") == 0) {
-                fprintf(stdout, HELP, argv[0]);
+                fprintf(stdout, HELP);
                 exit(0);
             } else if(strcmp(argv[i], "-c") == 0) {
                 colored = 1;
@@ -184,10 +184,12 @@ int main(int argc, char **argv) {
     for(size_t i=0; i<l; ++i) {
         switch(s[i]) {
         case 'r':
-            m = m >> 1 | m << 7;
+			if(m != 1)
+				m = m >> 1;
             break;
         case 'l':
-            m = m << 1 | m >> 7;
+			if(m != 128)
+				m = m << 1;
             break;
         case 'i':
             v = v ^ m;

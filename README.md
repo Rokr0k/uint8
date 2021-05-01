@@ -8,23 +8,23 @@ There is an uint8_t memory `v` initialized as `00000000`
 and an uint8_t mask `m` initialized as `00000001`
 ### `l`
 ```c
-m = m << 1 | m >> 7 // Circular shift
+if (m != 1) m = m << 1; // Left shift
 ```
 ### `r`
 ```c
-m = m >> 1 | m << 7 // Circular shift
+if (m != 128) m = m >> 1; // Right shift
 ```
 ### `i`
 ```c
-v = v ^ m // Invert
+v = v ^ m; // Invert
 ```
 ### `a`
 ```c
-v = v & ~m // Set to 0
+v = v & ~m; // Set to 0
 ```
 ### `o`
 ```c
-v = v | m // Set to 1
+v = v | m; // Set to 1
 ```
 ### `b`
 Prints certain bit.
@@ -38,7 +38,7 @@ Prints ascii character.
 Prints line feed (`\n`).
 ### `w`
 ```c
-while(v & m) {
+while (v & m) {
 ```
 ### `q`
 ```c
